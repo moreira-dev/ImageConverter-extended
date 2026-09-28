@@ -1,8 +1,8 @@
-using ImageConverter.Enums;
-using ImageConverter.Models;
+using ImageConverter.Core.Enums;
+using ImageConverter.Core.Models;
 using SixLabors.ImageSharp;
 
-namespace ImageConverter.Services;
+namespace ImageConverter.Core.Services;
 
 /// <summary>
 /// The details we know about a single image.

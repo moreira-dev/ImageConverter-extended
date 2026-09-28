@@ -1,8 +1,8 @@
-using ImageConverter.Enums;
-using ImageConverter.Models;
-using ImageConverter.Models.Converters;
+using ImageConverter.Core.Enums;
+using ImageConverter.Core.Models;
+using ImageConverter.Core.Models.Converters;
 
-namespace ImageConverter.Services;
+namespace ImageConverter.Core.Services;
 
 /// <summary>
 /// Main class to execute image conversion across formats

@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ImageConverter.Cli/ImageConverter.Cli.csproj" />
+    <Project Path="src/ImageConverter.Core/ImageConverter.Core.csproj" />
+  </Folder>
+</Solution>

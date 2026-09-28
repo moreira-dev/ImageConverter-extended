@@ -32,7 +32,7 @@ You need the [.NET 10 SDK](https://dotnet.microsoft.com/download).
 To run the app:
 
 ```
-dotnet run
+dotnet run --project src/ImageConverter.Cli
 ```
 
 To create a build:
@@ -41,27 +41,27 @@ To create a build:
 dotnet build
 ```
 
-The output is written to `bin/`.
+The app is built as `imgconv` in `src/ImageConverter.Cli/bin/`.
 
 ### Adding a new image format
 
-Each format is a subclass of [FormatConverter](Models/Converters/FormatConverter.cs).
+Each format is a subclass of [FormatConverter](src/ImageConverter.Core/Models/Converters/FormatConverter.cs).
 
 To add a format:
 
-1. Add the format to [ImageFormat](Enums/ImageFormat.cs).
-2. Create a new converter in `Models/Converters/` that inherits from [FormatConverter](Models/Converters/FormatConverter.cs).
-3. Add the converter to the `supportedFormats` list in [Program.cs](Program.cs).
+1. Add the format to [ImageFormat](src/ImageConverter.Core/Enums/ImageFormat.cs).
+2. Create a new converter in `src/ImageConverter.Core/Models/Converters/` that inherits from [FormatConverter](src/ImageConverter.Core/Models/Converters/FormatConverter.cs).
+3. Add the converter to the `supportedFormats` list in [Program.cs](src/ImageConverter.Cli/Program.cs).
 
 ### Adding a new menu option
 
-Each menu option is a class that implements [IMenuOption](Cli/Options/IMenuOption.cs).
+Each menu option is a class that implements [IMenuOption](src/ImageConverter.Cli/Options/IMenuOption.cs).
 
 To add a menu option:
 
-1. Create a new class in `Cli/Options/` that implements [IMenuOption](Cli/Options/IMenuOption.cs).
+1. Create a new class in `src/ImageConverter.Cli/Options/` that implements [IMenuOption](src/ImageConverter.Cli/Options/IMenuOption.cs).
 2. Set `DisplayText` to the text shown in the menu, and put the option's logic in `Run()`.
-3. Register the class in [Program.cs](Program.cs) with `services.AddSingleton<IMenuOption, YourOption>()`.
+3. Register the class in [Program.cs](src/ImageConverter.Cli/Program.cs) with `services.AddSingleton<IMenuOption, YourOption>()`.
 
 Options appear in the menu in the order they are registered, so add yours before `MenuExit`.
 

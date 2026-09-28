@@ -1,4 +1,4 @@
-using ImageConverter.Services;
+using ImageConverter.Core.Services;
 using Spectre.Console;
 
 namespace ImageConverter.Cli.Options;

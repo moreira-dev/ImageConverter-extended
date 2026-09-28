@@ -1,4 +1,4 @@
-namespace ImageConverter.Enums;
+namespace ImageConverter.Core.Enums;
 
 public enum ImageFormat
 {

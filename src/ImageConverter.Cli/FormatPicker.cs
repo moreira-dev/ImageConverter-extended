@@ -1,5 +1,5 @@
-using ImageConverter.Enums;
-using ImageConverter.Models;
+using ImageConverter.Core.Enums;
+using ImageConverter.Core.Models;
 using Spectre.Console;
 
 namespace ImageConverter.Cli;

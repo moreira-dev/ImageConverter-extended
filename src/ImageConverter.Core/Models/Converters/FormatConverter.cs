@@ -1,8 +1,8 @@
-using ImageConverter.Enums;
+using ImageConverter.Core.Enums;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 
-namespace ImageConverter.Models.Converters;
+namespace ImageConverter.Core.Models.Converters;
 
 public abstract class FormatConverter
 {

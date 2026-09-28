@@ -1,7 +1,7 @@
-using ImageConverter.Enums;
-using ImageConverter.Models.Converters;
+using ImageConverter.Core.Enums;
+using ImageConverter.Core.Models.Converters;
 
-namespace ImageConverter.Models;
+namespace ImageConverter.Core.Models;
 
 /// <summary>
 /// Helper model to quickly retrieve supported formats and extensions

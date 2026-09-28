@@ -1,8 +1,8 @@
-using ImageConverter.Enums;
+using ImageConverter.Core.Enums;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Png;
 
-namespace ImageConverter.Models.Converters;
+namespace ImageConverter.Core.Models.Converters;
 
 public class PngConverter : FormatConverter
 {

@@ -1,10 +1,9 @@
-﻿using ImageConverter.Cli;
-using ImageConverter.Cli.Options;
-using ImageConverter.Models.Converters;
-using ImageConverter.Services;
+﻿using ImageConverter.Cli.Options;
+using ImageConverter.Core.Models.Converters;
+using ImageConverter.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ImageConverter;
+namespace ImageConverter.Cli;
 
 internal abstract class Program
 {
