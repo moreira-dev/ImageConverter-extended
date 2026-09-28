@@ -1,6 +1,7 @@
 using ImageConverter.Core.Enums;
 using ImageConverter.Core.Models;
 using ImageConverter.Core.Models.Converters;
+using SixLabors.ImageSharp;
 
 namespace ImageConverter.Core.Services;
 
@@ -11,13 +12,13 @@ public class ImageConversion
 {
     private readonly FormatConverter[] _converters;
     public ImageFormats ImageFormats { get; }
-    
+
     public ImageConversion(FormatConverter[] converters)
     {
         _converters = converters;
         ImageFormats = new ImageFormats(converters);
     }
-    
+
     private string BuildOutputPath(string sourcePath, ImageFormat targetFormat)
     {
         string outputExtension = ImageFormats.GetPrimaryExtensionFor(targetFormat);
@@ -35,19 +36,20 @@ public class ImageConversion
     {
         return _converters.FirstOrDefault(c => c.Format == format);
     }
-    
+
     public string Convert(string sourcePath, ImageFormat targetFormat)
     {
         string outputPath = BuildOutputPath(sourcePath, targetFormat);
-        
+
         FormatConverter? converter = GetConverterFor(targetFormat);
 
         if (converter == null)
         {
-            throw new NotSupportedException($"Format {targetFormat} is not supported.");    
+            throw new NotSupportedException($"Format {targetFormat} is not supported.");
         }
-        
-        converter.Convert(sourcePath, outputPath);
+
+        using Image image = Image.Load(sourcePath);
+        converter.Save(image, outputPath);
 
         return outputPath;
     }
