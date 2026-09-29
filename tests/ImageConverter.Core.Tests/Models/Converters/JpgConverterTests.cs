@@ -1,4 +1,5 @@
 using ImageConverter.Core.Models.Converters;
+using ImageConverter.Core.Settings;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -11,7 +12,7 @@ public class JpgConverterTests
     {
         using Image<Rgba32> image = new Image<Rgba32>(1, 1, Color.Transparent.ToPixel<Rgba32>());
         using MemoryStream output = new MemoryStream();
-        JpgConverter converter = new JpgConverter();
+        JpgConverter converter = new JpgConverter(new ConverterSettings());
 
         converter.Save(image, output);
 

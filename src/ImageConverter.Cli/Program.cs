@@ -2,6 +2,7 @@ using System.IO.Abstractions;
 using ImageConverter.Cli.Options;
 using ImageConverter.Core.Models.Converters;
 using ImageConverter.Core.Services;
+using ImageConverter.Core.Settings;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ImageConverter.Cli;
@@ -10,15 +11,19 @@ internal abstract class Program
 {
     private static void Main(string[] args)
     {
+        FileSystem fileSystem = new FileSystem();
+        string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ImageConverter", "settings.json");
+        SettingsFile settingsFile = new SettingsFile(fileSystem, settingsPath);
+        ConverterSettings settings = settingsFile.Load();
+
         // Source of truth for supported formats. Update here when new formats are supported.
         FormatConverter[] supportedFormats = new FormatConverter[]
         {
-            new JpgConverter(),
+            new JpgConverter(settings),
             new PngConverter(),
             new WebpConverter()
         };
-        string outputFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "ConvertedImages");
-        ImageConversion conversionService = new ImageConversion(supportedFormats, outputFolder, new FileSystem());
+        ImageConversion conversionService = new ImageConversion(supportedFormats, settings, fileSystem);
         ImageStats statsService = new ImageStats(conversionService.ImageFormats);
 
         // Dependency injection setup
@@ -26,11 +31,14 @@ internal abstract class Program
         ServiceCollection services = new ServiceCollection();
         services.AddSingleton<ImageConversion>(conversionService);
         services.AddSingleton<ImageStats>(statsService);
+        services.AddSingleton<SettingsFile>(settingsFile);
+        services.AddSingleton<ConverterSettings>(settings);
 
         // New menu options here
         services.AddSingleton<IMenuOption, MenuOneImage>();
         services.AddSingleton<IMenuOption, MenuOneFolder>();
         services.AddSingleton<IMenuOption, MenuShowStats>();
+        services.AddSingleton<IMenuOption, MenuModifySettings>();
         services.AddSingleton<IMenuOption, MenuExit>();
         services.AddSingleton<CliManager>();
 

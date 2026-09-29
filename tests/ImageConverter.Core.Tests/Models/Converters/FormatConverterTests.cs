@@ -1,4 +1,5 @@
 using ImageConverter.Core.Models.Converters;
+using ImageConverter.Core.Settings;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
@@ -12,7 +13,7 @@ public class FormatConverterTests
 {
     public static TheoryData<FormatConverter, IImageFormat> ConvertersAndFormats { get; } = new TheoryData<FormatConverter, IImageFormat>
     {
-        { new JpgConverter(), JpegFormat.Instance },
+        { new JpgConverter(new ConverterSettings()), JpegFormat.Instance },
         { new PngConverter(), PngFormat.Instance },
         { new WebpConverter(), WebpFormat.Instance }
     };
