@@ -1,3 +1,4 @@
+using System.IO.Abstractions;
 using ImageConverter.Cli.Options;
 using ImageConverter.Core.Models.Converters;
 using ImageConverter.Core.Services;
@@ -16,7 +17,8 @@ internal abstract class Program
             new PngConverter(),
             new WebpConverter()
         };
-        ImageConversion conversionService = new ImageConversion(supportedFormats);
+        string outputFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "ConvertedImages");
+        ImageConversion conversionService = new ImageConversion(supportedFormats, outputFolder, new FileSystem());
         ImageStats statsService = new ImageStats(conversionService.ImageFormats);
 
         // Dependency injection setup
