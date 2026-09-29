@@ -38,7 +38,7 @@ internal abstract class Program
         services.AddSingleton<IMenuOption, MenuOneImage>();
         services.AddSingleton<IMenuOption, MenuOneFolder>();
         services.AddSingleton<IMenuOption, MenuShowStats>();
-        services.AddSingleton<IMenuOption, MenuModifySettings>();
+        services.AddSingleton<IMenuOption, MenuSettings>();
         services.AddSingleton<IMenuOption, MenuExit>();
         services.AddSingleton<CliManager>();
 
