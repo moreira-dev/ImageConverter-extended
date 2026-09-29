@@ -49,7 +49,8 @@ public class ImageConversion
         }
 
         using Image image = Image.Load(sourcePath);
-        converter.Save(image, outputPath);
+        using FileStream output = File.Create(outputPath);
+        converter.Save(image, output);
 
         return outputPath;
     }

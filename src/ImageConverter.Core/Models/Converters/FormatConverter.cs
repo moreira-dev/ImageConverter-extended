@@ -12,12 +12,13 @@ public abstract class FormatConverter
     protected abstract ImageEncoder Encoder { get; }
 
     /// <summary>
-    /// Saves the image in disk, using the class's Encoder
+    /// Writes the image to the stream, using the class's Encoder.
+    /// The caller must open and close the stream
     /// </summary>
-    public void Save(Image image, string outputPath)
+    public void Save(Image image, Stream output)
     {
         using Image prepared = PrepareImage(image);
-        prepared.Save(outputPath, Encoder);
+        prepared.Save(output, Encoder);
     }
 
     /// <summary>

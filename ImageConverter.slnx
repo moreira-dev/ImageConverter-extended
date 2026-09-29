@@ -3,4 +3,7 @@
     <Project Path="src/ImageConverter.Cli/ImageConverter.Cli.csproj" />
     <Project Path="src/ImageConverter.Core/ImageConverter.Core.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ImageConverter.Core.Tests/ImageConverter.Core.Tests.csproj" />
+  </Folder>
 </Solution>
