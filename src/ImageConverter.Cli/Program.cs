@@ -1,4 +1,4 @@
-﻿using ImageConverter.Cli.Options;
+using ImageConverter.Cli.Options;
 using ImageConverter.Core.Models.Converters;
 using ImageConverter.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,24 +18,24 @@ internal abstract class Program
         };
         ImageConversion conversionService = new ImageConversion(supportedFormats);
         ImageStats statsService = new ImageStats(conversionService.ImageFormats);
-        
+
         // Dependency injection setup
         // TODO consider moving to Extension Members
         ServiceCollection services = new ServiceCollection();
         services.AddSingleton<ImageConversion>(conversionService);
         services.AddSingleton<ImageStats>(statsService);
-        
+
         // New menu options here
         services.AddSingleton<IMenuOption, MenuOneImage>();
         services.AddSingleton<IMenuOption, MenuOneFolder>();
         services.AddSingleton<IMenuOption, MenuShowStats>();
         services.AddSingleton<IMenuOption, MenuExit>();
         services.AddSingleton<CliManager>();
-        
+
         ServiceProvider serviceProvider = services.BuildServiceProvider();
-        
+
         CliManager cli = serviceProvider.GetRequiredService<CliManager>();
-        
+
         cli.Run();
     }
 }

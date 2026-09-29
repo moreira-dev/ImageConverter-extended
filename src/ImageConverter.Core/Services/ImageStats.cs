@@ -51,7 +51,7 @@ public class ImageStats
     /// </summary>
     /// <param name="filePath">E.g. "/foo/bar.jpeg"</param>
     /// <param name="format">E.g. "JPG"</param>
-    private ImageStat GetStatsForFile(string filePath, ImageFormat format)
+    private static ImageStat GetStatsForFile(string filePath, ImageFormat format)
     {
         long fileSizeInBytes = new FileInfo(filePath).Length;
         int? width = null;
@@ -61,15 +61,15 @@ public class ImageStats
         {
             // Get image metadata through ImageSharp
             ImageInfo imageInfo = Image.Identify(filePath);
-            
+
             width = imageInfo.Width;
             height = imageInfo.Height;
         }
         catch (Exception exception) when (exception is ArgumentNullException or NotSupportedException or InvalidImageContentException or UnknownImageFormatException)
         {
-           // Dimensions will be null for images that failed to parse
+            // Dimensions will be null for images that failed to parse
         }
-        
+
         return new ImageStat(filePath, format, fileSizeInBytes, width, height);
     }
 }

@@ -9,13 +9,13 @@ public class MenuShowStats(ImageConversion conversionService, ImageStats statsSe
     public string DisplayText { get; } = "Show all image stats in folder";
 
     private readonly FileBrowser _folderBrowser =
-        new FileBrowser("Select a folder", conversionService.ImageFormats.AllExtensions);
+        new FileBrowser("Select a folder", conversionService.ImageFormats);
 
     /// <summary>
     /// Formats the image size for readability
     /// </summary>
     /// <returns>E.g. "1920 x 1080"</returns>
-    private string FormatDimensions(ImageStat stat)
+    private static string FormatDimensions(ImageStat stat)
     {
         if (stat.Width == null || stat.Height == null)
         {
@@ -30,7 +30,7 @@ public class MenuShowStats(ImageConversion conversionService, ImageStats statsSe
     /// </summary>
     /// <param name="bytes">E.g. 2048</param>
     /// <returns>E.g. "2 KB"</returns>
-    private string FormatFileSize(long bytes)
+    private static string FormatFileSize(long bytes)
     {
         // Thanks to https://stackoverflow.com/questions/281640/how-do-i-get-a-human-readable-file-size-in-bytes-abbreviation-using-net
         string[] units = new string[] { "B", "KB", "MB", "GB" };
@@ -50,7 +50,7 @@ public class MenuShowStats(ImageConversion conversionService, ImageStats statsSe
     /// <summary>
     /// Prints a table with the stats of all images in the list
     /// </summary>
-    private void ShowStatsTable(IReadOnlyList<ImageStat> stats)
+    private static void ShowStatsTable(IReadOnlyList<ImageStat> stats)
     {
         Table table = new Table();
 

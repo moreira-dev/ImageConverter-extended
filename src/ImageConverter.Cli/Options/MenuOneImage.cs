@@ -5,11 +5,11 @@ using Spectre.Console;
 namespace ImageConverter.Cli.Options;
 
 // See primary constructors
-public class MenuOneImage(ImageConversion conversionService): IMenuOption
+public class MenuOneImage(ImageConversion conversionService) : IMenuOption
 {
     public string DisplayText { get; } = "Convert one image";
-    
-    private readonly FileBrowser _imageBrowser = new FileBrowser("Select an image", conversionService.ImageFormats.AllExtensions);
+
+    private readonly FileBrowser _imageBrowser = new FileBrowser("Select an image", conversionService.ImageFormats);
 
     private readonly FormatPicker _formatPicker = new FormatPicker(conversionService.ImageFormats);
 

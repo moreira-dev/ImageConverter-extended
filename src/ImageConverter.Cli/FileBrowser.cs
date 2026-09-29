@@ -1,3 +1,4 @@
+using ImageConverter.Core.Models;
 using Spectre.Console;
 
 namespace ImageConverter.Cli;
@@ -28,20 +29,20 @@ public class FileBrowser
     /// <summary>
     /// Represents a single row in the File Browser
     /// </summary>
-    private record BrowseEntry(string DisplayText, string Path, EntryKind Kind);
+    private sealed record BrowseEntry(string DisplayText, string Path, EntryKind Kind);
 
     private const int PageSize = 15;
 
     private readonly string _title;
-    private readonly IReadOnlyList<string> _allowedExtensions;
+    private readonly ImageFormats _imageFormats;
 
     // Kept between calls so the browser reopens where the user left off.
     private string _currentDirectory;
 
-    public FileBrowser(string title, IReadOnlyList<string> allowedExtensions, string? startDirectory = null)
+    public FileBrowser(string title, ImageFormats imageFormats, string? startDirectory = null)
     {
         _title = title;
-        _allowedExtensions = allowedExtensions;
+        _imageFormats = imageFormats;
         _currentDirectory = startDirectory ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
     }
 
@@ -80,7 +81,10 @@ public class FileBrowser
             }
             catch (Exception exception) when (exception is UnauthorizedAccessException or IOException)
             {
-                if (!LeaveUnreadableDirectory(exception)) return null;
+                if (!LeaveUnreadableDirectory(exception))
+                {
+                    return null;
+                }
 
                 continue;
             }
@@ -172,7 +176,10 @@ public class FileBrowser
         AnsiConsole.MarkupLine($"[red]Cannot open that folder:[/] {Markup.Escape(exception.Message)}");
 
         DirectoryInfo? parent = Directory.GetParent(_currentDirectory);
-        if (parent == null) return false;
+        if (parent == null)
+        {
+            return false;
+        }
 
         _currentDirectory = parent.FullName;
 
@@ -181,12 +188,11 @@ public class FileBrowser
 
     private bool IsAllowed(string filePath)
     {
-        // TODO use the Dictionary from ImageFormats
-        return _allowedExtensions.Contains(Path.GetExtension(filePath).ToLower());
+        return _imageFormats.GetFormatFromFilePath(filePath) != null;
     }
 
-    private bool IsHidden(string path)
+    private static bool IsHidden(string path)
     {
-        return Path.GetFileName(path).StartsWith(".");
+        return Path.GetFileName(path).StartsWith('.');
     }
 }

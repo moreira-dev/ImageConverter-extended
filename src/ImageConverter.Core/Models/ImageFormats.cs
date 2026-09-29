@@ -9,7 +9,7 @@ namespace ImageConverter.Core.Models;
 public class ImageFormats
 {
     private readonly Dictionary<ImageFormat, string[]> _supportedFormats;
-    
+
     private readonly Dictionary<string, ImageFormat> _formatsByExtensions;
 
     public ImageFormats(FormatConverter[] converterList)
@@ -21,19 +21,19 @@ public class ImageFormats
     /// <summary>
     /// Creates a new dictionary to be cached for better performance
     /// </summary>
-    private Dictionary<ImageFormat, string[]> GetSupportedFormats(FormatConverter[] converterList)
+    private static Dictionary<ImageFormat, string[]> GetSupportedFormats(FormatConverter[] converterList)
     {
         Dictionary<ImageFormat, string[]> formats = new Dictionary<ImageFormat, string[]>();
-        
+
         foreach (FormatConverter converter in converterList)
         {
             formats.Add(converter.Format, converter.SupportedExtensions);
-            
+
         }
 
         return formats;
     }
-    
+
     /// <summary>
     /// Creates a new dictionary to be cached for better performance
     /// </summary>
@@ -83,7 +83,7 @@ public class ImageFormats
     {
         return _supportedFormats.GetValueOrDefault(format);
     }
-    
+
     /// <summary>
     /// Returns the first extension for the given format.
     /// Usually used for output formats
@@ -101,8 +101,8 @@ public class ImageFormats
     /// <returns>E.g. "JPG" or null</returns>
     public ImageFormat? GetFormatByExtension(string extension)
     {
-        
-        if (!_formatsByExtensions.TryGetValue(extension.ToLower(), out ImageFormat format))
+
+        if (!_formatsByExtensions.TryGetValue(extension.ToLowerInvariant(), out ImageFormat format))
         {
             return null;
         }

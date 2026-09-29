@@ -9,7 +9,7 @@ public class MenuOneFolder(ImageConversion conversionService) : IMenuOption
     public string DisplayText { get; } = "Convert all images in folder";
 
     private readonly FileBrowser _folderBrowser =
-        new FileBrowser("Select a folder", conversionService.ImageFormats.AllExtensions);
+        new FileBrowser("Select a folder", conversionService.ImageFormats);
 
     private readonly FormatPicker _formatPicker = new FormatPicker(conversionService.ImageFormats);
 
@@ -22,9 +22,9 @@ public class MenuOneFolder(ImageConversion conversionService) : IMenuOption
             AnsiConsole.MarkupLine("[yellow]No folder selected.[/]");
             return;
         }
-        
+
         ImageFormat targetFormat = _formatPicker.SelectOutputFormat();
-        
+
         foreach (string filePath in Directory.EnumerateFiles(folderPath).Order())
         {
             ImageFormat? format = conversionService.ImageFormats.GetFormatFromFilePath(filePath);

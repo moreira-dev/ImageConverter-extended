@@ -9,7 +9,7 @@ namespace ImageConverter.Cli;
 /// </summary>
 public class CliManager
 {
-    
+
     private readonly IMenuOption[] _menuOptions;
 
     private readonly ImageConversion _conversionService;
@@ -20,7 +20,7 @@ public class CliManager
         _menuOptions = menuOptions.ToArray();
     }
 
-    private void ShowTitle()
+    private static void ShowTitle()
     {
         AnsiConsole.MarkupLine("[DarkViolet]Image[/] [bold DodgerBlue2]Converter[/]");
     }
