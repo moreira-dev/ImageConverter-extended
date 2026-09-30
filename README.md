@@ -4,7 +4,7 @@ A command-line tool for converting images between JPG, PNG and WebP.
 
 Image Converter is a simple .NET CLI project to practice good OOP principles.
 
-![Menu](docs/Menu.png)
+![Demo](docs/cli-demo.webp)
 
 It is a first attempt at creating a useful CLI tool with .NET. It will serve as a foundation for a more advance project in the future.
 
