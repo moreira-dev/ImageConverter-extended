@@ -1,7 +1,11 @@
 # Build results
 bin/
 obj/
+publish/
 
 # JetBrains
 .idea/
 *.DotSettings.user
+
+# Six Labors license key
+sixlabors.lic

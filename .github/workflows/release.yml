@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - rid: win-x64
+            os: windows-latest
+            ext: .exe
+          - rid: linux-x64
+            os: ubuntu-latest
+            ext: ''
+          - rid: osx-x64
+            os: macos-latest
+            ext: ''
+          - rid: osx-arm64
+            os: macos-latest
+            ext: ''
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      SixLaborsLicenseKey: ${{ secrets.SIXLABORS_LICENSE_KEY }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Publish
+        run: dotnet publish src/ImageConverter.Cli --configuration Release --runtime ${{ matrix.rid }} --self-contained --output publish
+
+      - name: Name the file after its OS
+        run: mv publish/imgconv${{ matrix.ext }} imgconv-${{ matrix.rid }}${{ matrix.ext }}
+
+      - name: Upload the file
+        uses: actions/upload-artifact@v7
+        with:
+          name: imgconv-${{ matrix.rid }}
+          path: imgconv-${{ matrix.rid }}${{ matrix.ext }}
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Download the files
+        uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create a draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --draft --verify-tag --title "$GITHUB_REF_NAME" --generate-notes --repo "$GITHUB_REPOSITORY"
