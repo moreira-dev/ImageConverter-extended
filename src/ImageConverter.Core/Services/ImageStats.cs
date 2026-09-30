@@ -17,9 +17,9 @@ public class ImageStats
 {
     private readonly ImageFormats _imageFormats;
 
-    public ImageStats(ImageFormats imageFormats)
+    public ImageStats(ImageConversion imageConversion)
     {
-        _imageFormats = imageFormats;
+        _imageFormats = imageConversion.ImageFormats;
     }
 
     /// <summary>
