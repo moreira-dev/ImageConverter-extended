@@ -9,10 +9,13 @@ namespace ImageConverter.Cli;
 
 internal abstract class Program
 {
+    private static string SettingsFolder { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ImageConverter");
+
     private static void Main(string[] args)
     {
+        string settingsPath = Path.Combine(SettingsFolder, "settings.json");
+
         FileSystem fileSystem = new FileSystem();
-        string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ImageConverter", "settings.json");
         SettingsFile settingsFile = new SettingsFile(fileSystem, settingsPath);
         ConverterSettings settings = settingsFile.Load();
 
@@ -23,7 +26,7 @@ internal abstract class Program
             new PngConverter(),
             new WebpConverter()
         };
-        ImageConversion conversionService = new ImageConversion(supportedFormats, settings, fileSystem);
+        ImageConversion conversionService = new ImageConversion(supportedFormats, settings, fileSystem, SettingsFolder);
         ImageStats statsService = new ImageStats(conversionService.ImageFormats);
 
         // Dependency injection setup

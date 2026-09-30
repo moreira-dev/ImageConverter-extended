@@ -66,10 +66,40 @@ public class MenuSettings(
     {
         settings.OutputFolder = AskForOutputFolder();
         settings.JpgQuality = AskForJpgQuality();
+        settings.AiNaming = AskForAiNaming();
 
         settingsFile.Save(settings);
 
         AnsiConsole.MarkupLine($"Settings saved to [green]{Markup.Escape(settingsFile.FilePath)}[/]");
+
+        if (settings.AiNaming)
+        {
+            SetupAiModel();
+        }
+    }
+
+    /// <summary>
+    /// Checks that the AI model is downloaded and can be loaded
+    /// </summary>
+    private void SetupAiModel()
+    {
+        string status = conversionService.IsAiModelDownloaded
+            ? "Loading the AI model..."
+            : "Downloading the AI model, please wait...";
+
+        try
+        {
+            AnsiConsole.Status().Start(status, _ => conversionService.CheckAiModel());
+
+            AnsiConsole.MarkupLine("[green]The AI model has been set up successfully.[/]");
+        }
+        catch (Exception exception)
+        {
+            settings.AiNaming = false;
+            settingsFile.Save(settings);
+
+            AnsiConsole.MarkupLine($"[red]The AI model could not be loaded. AI naming is off: {Markup.Escape(exception.Message)}[/]");
+        }
     }
 
     /// <returns>E.g. "." or "/foo/bar". The current folder when the user cancels</returns>
@@ -95,5 +125,14 @@ public class MenuSettings(
             new TextPrompt<int>("[bold]JPG quality, from 1 to 100:[/]")
                 .DefaultValue(settings.JpgQuality)
                 .Validate(quality => quality is >= 1 and <= 100, "[red]Enter a number from 1 to 100[/]"));
+    }
+
+    private bool AskForAiNaming()
+    {
+        return AnsiConsole.Prompt(
+            new ConfirmationPrompt("[bold]Add AI generated tags to the file name on conversion?[/]")
+            {
+                DefaultValue = settings.AiNaming
+            });
     }
 }

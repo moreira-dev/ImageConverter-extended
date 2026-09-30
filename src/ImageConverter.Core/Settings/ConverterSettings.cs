@@ -10,4 +10,6 @@ public record ConverterSettings
     public string OutputFolder { get; set; } = SameFolderAsOriginal;
 
     public int JpgQuality { get; set; } = 95;
+
+    public bool AiNaming { get; set; }
 }
