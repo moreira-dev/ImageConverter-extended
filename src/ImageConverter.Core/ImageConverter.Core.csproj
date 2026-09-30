@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" />
     <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" />
     <PackageReference Include="YoloDotNet" />
     <PackageReference Include="YoloDotNet.ExecutionProvider.Cpu" />
